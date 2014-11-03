@@ -39,15 +39,17 @@ import jdk.dio.gpio.GPIOPinConfig;
  * restarting from beginning when its end is reached. <p>
  *
  * The sequence of LEDs is created at application startup using the MIDlet attribute
- * "LEDPins" that define a list of GPIO port/pins to use for each LED. The format 
- * of this attribute is: "Port,Pin|Port,Pin|Port,Pin|[...]". 
+ * "LEDPins" that define a sequence of GPIO port/pins corresponding to each LED. The 
+ * format of this attribute is: "Port,Pin|Port,Pin|Port,Pin|[...]". 
  * Note that a GPIO pin may be present several time in the sequence.<p>
  *
- * Target platform is Emulator and Raspberry Pi with some LEDs connected to GPIO, 
+ * Target platform is Emulator or Raspberry Pi with some LEDs connected to GPIO, 
  * but it could be any other platform supporting GPIO. <p>
- *
- * The default value for "LEDPins" attribute is intended to be used with the Emulator 
- * (LEDs are ordered following the GPIOPin logical name: LED 1, LED 2, etc..). <p>
+ * 
+ * The default project configuration is for Emulator. "LEDPins" attribute is configured
+ * using GPIOPins corresponding to logical LEDs of the Emulator (LED 1, LED 2, etc.).
+ * A second project configuration is for the Raspberry Pi (RPI). "LEDPins" attribute is 
+ * configured using the following GPIO pins on the board: 17,18,27,22,23,24,25. <p>
  *
  * On the RPi, the program have been tested using the "7_LEDs" or "16_LEDs" board 
  * from BitWizard ( http://bitwizard.nl/wiki/index.php/16_LEDs ) which is convenient 
@@ -129,6 +131,7 @@ public class GPIOLedsDemoMIDlet extends MIDlet {
                         _LEDSequence[nIdx] = OpenedDevices.get(currLEDConfig);
                     }
                     else {
+                        System.out.format("Open GPIOPin: %d\n", currLEDConfig.getPinNumber());
                         // Otherwise, open the GPIOPin
                         _LEDSequence[nIdx] = (GPIOPin) DeviceManager.open(currLEDConfig);
                         _LEDSequence[nIdx].setValue(false);
