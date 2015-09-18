@@ -230,12 +230,13 @@ public class GPIOLedsDemoMIDlet extends MIDlet {
                 int pin = Integer.parseInt(PinStr);
 
                 // Using these parsed numbers, create a GPIOPinConfig as output pin
-                LEDPinConfigList.add(new GPIOPinConfig(
-                        port, pin,
-                        GPIOPinConfig.DIR_OUTPUT_ONLY,
-                        GPIOPinConfig.MODE_OUTPUT_PUSH_PULL,
-                        GPIOPinConfig.TRIGGER_BOTH_EDGES,
-                        false));
+                LEDPinConfigList.add(new GPIOPinConfig.Builder()
+                    .setControllerNumber(port)
+                    .setPinNumber(pin)
+                    .setDirection(GPIOPinConfig.DIR_OUTPUT_ONLY)
+                    .setDriveMode(GPIOPinConfig.MODE_OUTPUT_PUSH_PULL)
+                    .setInitValue(false)
+                    .build());
                 System.out.format("parsed pin config: %d,%d\n", port, pin);
             } catch (NoSuchElementException | NumberFormatException ex) {
                 System.out.println("Error while parsing pin configuration");
